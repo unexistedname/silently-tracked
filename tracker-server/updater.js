@@ -14,7 +14,7 @@ async function updater(dir, logDir) {
             manga["Chapter List"].sort((a, b) => a - b);
         }
         writeFileSync(dir, JSON.stringify(data, null, 2), 'utf-8');
-        console.log("Update data success!");
+        console.log("\x1b[32mUpdate data success!\x1b[0m");
     } catch (error) {
         console.error(error);
     }

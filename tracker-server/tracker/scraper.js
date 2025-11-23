@@ -7,7 +7,7 @@ let browser, page;
 async function initBrowser() {
     // Reuse browser/page if already initialized to avoid concurrent launches
     if (browser && page) {
-        console.log("Browser already initialized");
+        console.log("\x1b[33mBrowser already initialized\x1b[0m");
         return;
     }
     try {
@@ -16,7 +16,7 @@ async function initBrowser() {
         page = await browser.newPage();
         console.log("New tab opened");
     } catch (error) {
-        console.error("Error opening browser or new tab: " + error, "\n");
+        console.error("\x1b[31mError opening browser or new tab: \x1b[0m" + error, "\n");
         // ensure clean state
         browser = null;
         page = null;
@@ -25,14 +25,14 @@ async function initBrowser() {
 }
 async function closeBrowser() {
     if (!browser) {
-        console.log("No browser to close");
+        console.log("\x1b[33mNo browser to close\x1b[0m");
         return;
     }
     try {
         await browser.close();
         console.log("Browser closed");
     } catch (error) {
-        console.error("Error closing browser: " + error, "\n");
+        console.error("\x1b[31mError closing browser: \x1b[0m" + error, "\n");
     }
     // Kosongin variabel
     browser = null;
@@ -54,7 +54,7 @@ async function chapterScraper(url) {
         console.log(`Scraped ${list.length} chapters`);
         return list;
     } catch (error) {
-        console.error("Error while scraping chapter: ", error, "\n");
+        console.error("\x1b[31mError while scraping chapter: \x1b[0m", error, "\n");
     }
 }
 async function titleScraper(url) {
@@ -64,7 +64,7 @@ async function titleScraper(url) {
         console.log(`Title scraped`)
         return page.textContent('h1[itemprop="name"]');
     } catch (error) {
-        console.error("Error while scraping title: ", error, "\n");
+        console.error("\x1b[31mError while scraping title: \x1b[0m", error, "\n");
     }
 }
 async function descScraper(url) {
@@ -74,7 +74,7 @@ async function descScraper(url) {
         console.log(`Description scraped`)
         return page.textContent('#tabpanel-description div[itemprop="description"]:nth-child(2)');
     } catch (error) {
-        console.error("Error while scraping description: ", error, "\n");
+        console.error("\x1b[31mError while scraping description: \x1b[0m", error, "\n");
     }
 }
 async function coverScraper(url, title) { //Cmn ngambil url gambarnya doang, ngesavenya pake fungsi lain
@@ -91,7 +91,7 @@ async function coverScraper(url, title) { //Cmn ngambil url gambarnya doang, nge
         await saveCover(imgUrl, dirPath, filePath);
         return filePath;
     } catch (error) {
-        console.error("Error while scraping cover: ", error, "\n");
+        console.error("\x1b[31mError while scraping cover: \x1b[0m", error, "\n");
     }
 }
 async function saveCover(url, dir, full) { //Jgn diapus fullnya wkwkwkw
@@ -102,13 +102,13 @@ async function saveCover(url, dir, full) { //Jgn diapus fullnya wkwkwkw
     });
     if (!existsSync(dir)) {
         mkdirSync(dir, { recursive: true });
-        console.log(`No directory, created one`);
+        console.log(`\x1b[33mNo directory, created one\x1b[0m`);
     };
     if (!existsSync(full)) {
         const write = createWriteStream(full);
         await res.data.pipe(write);
         write.on('finish', () => {
-            console.log("Image saved in", dir);
+            console.log("\x1b[32mImage saved in \x1b[0m", dir);
         });
     };
 }

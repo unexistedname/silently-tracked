@@ -1,7 +1,8 @@
 import { resolve, basename } from 'path';
 import { readFileSync } from 'fs';
 import tracker from './tracker/tracker.js';
-import updater from './tracker/updater.js';
+import updater from './updater.js';
+import announcer from '../discord-bot/announcer.js';
 import "dotenv/config";
 const dataPath = resolve('./data/data.json');
 const updateLogPath = resolve('./data/updateLog.json');
@@ -18,16 +19,41 @@ console.log = (...args) => {
 
 /* 
 - memulai tracking tiap x menit \\ done
-- if tracker != 0, announce bot + write file
+- if tracker != 0, announce bot + write file //donbe
+*/
+
+/* For debugging 
+(async () => {
+    console.log("\x1b[34mScraping started... \x1b[0m");
+    
+    for (let manga of mangaData) {
+        const title = [...Object.keys(manga)];
+        const results = await tracker(...title, dataPath, updateLogPath);
+        console.log(results.length);
+        
+        if (results.length != 0) {
+            await announcer(title, manga[title]["Link"], results, manga[title]["Image Directory"]);
+        }
+    };
+    await updater(dataPath, updateLogPath);
+    console.log("\x1b[34mScraping ended! Next scrape in ", process.env.interval, "\x1b[34mMinutes\x1b[0m");  
+})();
 */
 
 // Tracking manga tiap 30 mnt (edit intervalny di .env)
 setInterval(
     async () => {
+        console.log("\x1b[34mScraping started... \x1b[0m");
+        
         for (let manga of mangaData) {
             const title = [...Object.keys(manga)];
             const results = await tracker(...title, dataPath, updateLogPath);
+            console.log(results.length);
+            
+            if (results.length != 0) {
+                await announcer(title, manga[title]["Link"], results, manga[title]["Image Directory"]);
+            }
         };
         await updater(dataPath, updateLogPath);
-        
-    }, parseInt(process.env.interval) * 60000);
+        console.log("\x1b[34mScraping ended! Next scrape in", process.env.interval, "\x1b[34mMinutes\x1b[0m");  
+    }, parseInt(process.env.interval) * 2000 * 3);

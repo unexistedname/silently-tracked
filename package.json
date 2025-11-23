@@ -2,6 +2,7 @@
   "name": "manga-tracker",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "trackerTest": "node .\\tracker-server\\tracker\\test.js",
     "dataInit": "node .\\init.js",

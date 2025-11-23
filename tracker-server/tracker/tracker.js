@@ -5,11 +5,11 @@ async function tracker(title, dir, saveDir) {
     const data = JSON.parse(readFileSync(dir, 'utf-8'));
     await initBrowser()
     try {
-        console.log("Processing: ", title);
+        console.log(`Processing: \x1b[34m${title}\x1b[0m`);
 
         const entry = await data.find(item => Object.prototype.hasOwnProperty.call(item, title)); //chatgpt ass shit idk
         if (!entry) {
-            console.log('Title not found in data:', title);
+            console.error('\x1b[31mTitle not found in data:\x1b[0m', title);
             await closeBrowser();
             return 0;
         }
@@ -27,7 +27,7 @@ async function tracker(title, dir, saveDir) {
         await updateLog(saveDir, title, update);
         return update;
     } catch (error) {
-        console.error("Error in tracker function: ", error);
+        console.error("\x1b[31mError in tracker function: \x1b[0m", error);
         await closeBrowser();
         return 0;
     }
@@ -39,12 +39,12 @@ async function updateLog(dir, title, update) {
             //bikin klo gaada
             const x = {};
             writeFileSync(dir, JSON.stringify(x, null, 2), "utf8");
-            console.log("No log file detected, creating a new one...");
+            console.log("\x1b[33mNo log file detected, creating a new one...\x1b[0m");
         }
         let log = JSON.parse(readFileSync(dir, 'utf-8'));
         log[title] = update;
         writeFileSync(dir, JSON.stringify(log, null, 2))
-        console.log(`Successfully save ${title}'s update log`)
+        console.log(`\x1b[32mSuccessfully save ${title}'s update log\x1b[0m`)
     } catch (error) {
         console.error(error);   
     }
