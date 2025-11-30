@@ -8,7 +8,7 @@ Nothing more, that's it.
 
 **Future implementations:**
 - [ ] Website GUI using React
-- [ ] Replace Playwright with request-based scraping for optimization
+- [ ] Replace Playwright with request-based scraping for optimization (too lazy :)
 - [ ] Interactive Discord bot features
 - [ ] Ability to add new manga without modifying the code
 - [ ] Support for tracking multiple websites
