@@ -2,7 +2,7 @@ import { resolve, basename } from 'path';
 import { readFileSync } from 'fs';
 import tracker from './tracker/tracker.js';
 import updater from './updater.js';
-// import announcer from '../discord-bot/announcer.js';
+import announcer from '../discord-bot/announcer.js';
 import "dotenv/config";
 const dataPath = resolve('./data/data.json');
 const updateLogPath = resolve('./data/updateLog.json');
@@ -29,9 +29,9 @@ setInterval(
             const title = [...Object.keys(manga)];
             const results = await tracker(...title, dataPath, updateLogPath);
             
-            // if (results.length != 0 && Array.isArray(results)) {
-            //     await announcer(title, manga[title]["Link"], results, manga[title]["Image Directory"]);
-            // }
+            if (results.length != 0 && Array.isArray(results)) {
+                await announcer(title, manga[title]["Link"], results, manga[title]["Image Directory"]);
+            }
         };
         await updater(dataPath, updateLogPath);
         console.log("\x1b[34mScraping ended! Next scrape in", process.env.interval, "\x1b[34mMinutes\x1b[0m");  
