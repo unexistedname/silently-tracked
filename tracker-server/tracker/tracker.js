@@ -1,6 +1,7 @@
 import { readFileSync, existsSync, writeFileSync } from 'fs';
 import { chapterScraper, initBrowser, closeBrowser } from './scraper.js';
 import { format } from 'date-and-time';
+
 // Bandingin chapter
 async function tracker(title, dir, saveDir) {
     const data = JSON.parse(readFileSync(dir, 'utf-8'));

@@ -1,18 +1,25 @@
 import { readFileSync, existsSync, writeFileSync } from "fs";
 import scraper from "./tracker-server/tracker/scraper";
-const baseLink = JSON.parse(readFileSync("./data/baseLink.json", "utf-8"));
-const path = "./data/data.json";
+
+const path:string = "./data/data.json";
+const baseLink:Record<string, string> = JSON.parse(readFileSync("./data/baseLink.json", "utf-8"));
 
 if (!existsSync(path)) {
   //bikin klo gaada
-  const x = [];
+  const x:Record<string, string> = {};
   writeFileSync(path, JSON.stringify(x, null, 2), "utf8");
   console.log("No data file detected, creating a new one...");
 }
+type mangaData = {
+  "Original Title": string;
+  "Link": string;
+  "Description": string;
+  "Image Directory": string;
+  "Chapter List": number[];
+}
+type dataType = Record<string, mangaData>;
 
-type dataType = Record<>
-
-data = [];
+const mangaData: dataType = {};
 (async () => {
   try {
     await scraper.initBrowser();
@@ -21,20 +28,17 @@ data = [];
       const title = await scraper.titleScraper(b);
       const desc = await scraper.descScraper(b);
       const image = await scraper.coverScraper(b, a);
-      
-      const mangaData = {
-        [a]: {
+
+      mangaData[a] = {
           "Original Title": title.trim(),
           "Link": b,
           "Description": desc,
           "Image Directory": image,
           "Chapter List": [...chapter],
-        },
       };
-      data.push(mangaData);
       console.log(`${a} loaded`);
     }
-    writeFileSync(path, JSON.stringify(data, null, 2), "utf-8");
+    writeFileSync(path, JSON.stringify(mangaData, null, 2), "utf-8");
   } catch (error) {
     console.log(error);
   } finally {
