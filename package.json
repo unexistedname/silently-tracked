@@ -4,10 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "tracker-test": "node .\\tracker-server\\tracker\\test.js",
-    "dataInit": "node .\\init.js",
-    "tracker": "node .\\tracker-server\\index.js",
-    "start": "concurrently \"node program1.js\" \"node program2.js\""
+    "start": "npx tsx main.ts"
   },
   "keywords": [],
   "author": "",
@@ -17,9 +14,7 @@
     "axios": "^1.12.2",
     "cheerio": "^1.1.2",
     "date-and-time": "^4.1.1",
-    "discord.js": "^14.23.2",
-    "dotenv": "^17.2.3",
-    "playwright": "^1.56.1"
+    "dotenv": "^17.2.3"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.35",

@@ -24,14 +24,6 @@ const chapterStored = existsSync(chapterPath)
   : createNewFile(chapterPath, "chapter");
 let interval: number = parseInt(process.env.INTERVAL as string);
 
-interface Chapter {
-  chapter: number[];
-  newChapter: number[];
-  lastUpdate: string;
-}
-type Metadata = {
-  [key: string]: Scraper.metadata;
-};
 
 if (isNaN(interval)) {
   console.log(
@@ -46,18 +38,23 @@ setInterval(async () => {
     if (baseData.hasOwnProperty(key)) {
       try {
         console.log(`[ MAIN ] Processing ${key}...`);
-        const id = key.toLowerCase().replace(/\s+/g, "");
+        const id: string = key.toLowerCase().replace(/\s+/g, "");
         const res = await axios.get(baseData[key]);
-        
+
         console.log(`[ MAIN ] Successfully executed GET request for ${key}...`);
         const dataScrape = Scraper.metadataRK(res.data);
         const chapterScrape = await Scraper.chapter(res.data);
-        
+
         console.log(`[ MAIN ] Scraping complete! working on local data...`);
-        const oldChapter: number[] = chapterStored[id]["chapter"];
-        const newChapter = chapterScrape.filter((x) => !oldChapter.includes(x));
-        
-        console.log(`[ MAIN ] New data has been stored to temporary variables. Stopping the program before the iteration ends will delete all progress.`)
+        const oldChapter: number[] = chapterStored[id]?.chapter ?? [];
+        let newChapter: number[] = chapterScrape.filter((x) => !oldChapter.includes(x));
+        if (newChapter.length === 0) {
+          newChapter = chapterStored[id]?.newChapter;
+        }
+
+        console.log(
+          `[ MAIN ] New data has been stored to temporary variables. Stopping the program before the iteration ends will delete all progress.`,
+        );
         dataStored[id] = dataScrape;
         chapterStored[id] = {
           chapter: [...oldChapter, ...newChapter],
@@ -69,10 +66,14 @@ setInterval(async () => {
       }
     }
   }
-  console.log(`[ MAIN ] Iteration done! Saving data into local file (please do not close it yet)...`);
+  console.log(
+    `[ MAIN ] Iteration done! Saving data into local file (please do not close it yet)...`,
+  );
   writeFileSync(chapterPath, JSON.stringify(chapterStored, null, 2), "utf-8");
   writeFileSync(dataPath, JSON.stringify(dataStored, null, 2), "utf-8");
-  console.log(`[ MAIN ] Iteration complete! You may close the program safely or let it continue in ${interval} minutes.`);
+  console.log(
+    `[ MAIN ] Iteration complete! You may close the program safely or let it continue in ${interval} minutes.`,
+  );
 }, interval * 60000);
 
 // For debugging
