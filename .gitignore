@@ -1,4 +1,6 @@
 node_modules
 .env
-data/media/datatest.json
+data/chapter.json
+data/data.json
+data/media
 .gitignore
