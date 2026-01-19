@@ -24,7 +24,6 @@ const chapterStored = existsSync(chapterPath)
   : createNewFile(chapterPath, "chapter");
 let interval: number = parseInt(process.env.INTERVAL as string);
 
-
 if (isNaN(interval)) {
   console.log(
     "Cannot get the INTERVAL value from env. Using the default value (30) instead.",
@@ -47,7 +46,9 @@ setInterval(async () => {
 
         console.log(`[ MAIN ] Scraping complete! working on local data...`);
         const oldChapter: number[] = chapterStored[id]?.chapter ?? [];
-        let newChapter: number[] = chapterScrape.filter((x) => !oldChapter.includes(x));
+        let newChapter: number[] = chapterScrape.filter(
+          (x) => !oldChapter.includes(x),
+        );
         if (newChapter.length === 0) {
           newChapter = chapterStored[id]?.newChapter;
         }
@@ -57,7 +58,7 @@ setInterval(async () => {
         );
         dataStored[id] = dataScrape;
         chapterStored[id] = {
-          chapter: [...oldChapter, ...newChapter],
+          chapter: chapterScrape,
           newChapter: newChapter,
           lastUpdate: new Date().toISOString(),
         };
@@ -76,7 +77,7 @@ setInterval(async () => {
   );
 }, interval * 60000);
 
-// For debugging
+// ========== For debugging ========== 
 // (async () => {
 //   for (let key in baseData) {
 //     if (baseData.hasOwnProperty(key)) {
@@ -108,11 +109,16 @@ setInterval(async () => {
 //   const chapterScrape = await Scraper.chapter(res.data);
 
 //   const oldChapter: number[] = chapterStored[id]?.chapter ?? [];
-//   const newChapter = chapterScrape.filter((x) => !oldChapter.includes(x));
+//   let newChapter: number[] = chapterScrape.filter(
+//     (x) => !oldChapter.includes(x),
+//   );
+//   if (newChapter.length === 0) {
+//     newChapter = chapterStored[id]?.newChapter;
+//   }
 
 //   dataStored[id] = dataScrape;
 //   chapterStored[id] = {
-//     chapter: [...oldChapter, ...newChapter],
+//     chapter: chapterScrape,
 //     newChapter: newChapter,
 //     lastUpdate: new Date().toISOString(),
 //   };
