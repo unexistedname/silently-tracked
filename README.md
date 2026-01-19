@@ -33,3 +33,13 @@ Example:
 - [ ] Support for tracking multiple websites
 - [ ] Mirroring feature (basically same as the prev one)
     
+---
+
+## Disclaimer
+
+This project is for **educational and personal use purposes only**. 
+
+1. **No Affiliation:** This tool is not affiliated with, authorized, maintained, or sponsored by the website(s) it tracks.
+2. **Content Ownership:** The developer does not host, upload, or own any of the content tracked by this script. All rights, titles, and interests in the content belong to their respective owners/original creators.
+3. **Usage Responsibility:** The user assumes all responsibility for how they use this tool. The developer is not liable for any misuse, copyright infringement, or legal issues arising from the use of this software.
+4. **No Warranties:** This software is provided "as is" without any warranties of any kind.
