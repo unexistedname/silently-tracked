@@ -25,6 +25,8 @@ Example:
 - `data.json` contains metadata for every tracked manga. Currently it's unused, but it'll be used for future app/gui.
 - `chapter.json` contains the scraped chapters. It also has newChapter key which holds newly updated chapter. The chapter(s) will stay in newChapter until newer chapter is detected.
 
+This project is intended to be used with another program that I plan to make in the future (discord bot for notification and some GUI app). It won't do much on its own.
+
 ## **Future implementations:**
 - [ ] Website GUI using React (or maybe just a regular software/mobile app if i have time)
 - [ ] Tracks personal records and history (idk how to say it).
@@ -40,6 +42,6 @@ Example:
 This project is for **educational and personal use purposes only**. 
 
 1. **No Affiliation:** This tool is not affiliated with, authorized, maintained, or sponsored by the website(s) it tracks.
-2. **Content Ownership:** The developer does not host, upload, or own any of the content tracked by this script. All rights, titles, and interests in the content belong to their respective owners/original creators.
+2. **Content Ownership:** I do not host, upload, or own any of the content tracked by this script. All rights, titles, and interests in the content belong to their respective owners/original creators.
 3. **Usage Responsibility:** The user assumes all responsibility for how they use this tool. The developer is not liable for any misuse, copyright infringement, or legal issues arising from the use of this software.
-4. **No Warranties:** This software is provided "as is" without any warranties of any kind.
+4. **No Warranties:** This program is provided "as is" without any warranties of any kind.
