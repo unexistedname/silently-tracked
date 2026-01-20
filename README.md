@@ -20,7 +20,7 @@ Example:
 ```
 3. Open a terminal inside the folder,
 4. Run `npm install`
-5. Run `npm run start`
+5. Run `npm run start` for a one-time check, `npm run start_auto` for periodic check (the interval value can be configured in the `.env` file)
 6. You may notice new files called `chapter.json` and `data.json` have appeared in `data` folder. 
 - `data.json` contains metadata for every tracked manga. Currently it's unused, but it'll be used for future app/gui.
 - `chapter.json` contains the scraped chapters. It also has newChapter key which holds newly updated chapter. The chapter(s) will stay in newChapter until newer chapter is detected.
