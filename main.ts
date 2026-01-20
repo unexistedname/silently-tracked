@@ -67,11 +67,14 @@ for (let key in baseData) {
     }
   }
 }
-console.log(
-  `[ MAIN ] Iteration done! Saving data into local file (please do not close it yet)...`,
-);
+console.log(`[ MAIN ] Tracking done! Saving data into local file (please do not close it yet)...`);
 writeFileSync(chapterPath, JSON.stringify(chapterStored, null, 2), "utf-8");
 writeFileSync(dataPath, JSON.stringify(dataStored, null, 2), "utf-8");
+<<<<<<< HEAD
 console.log(
   `[ MAIN ] Iteration complete! You may close the program safely or let it continue in ${interval} minutes.`,
 );
+=======
+console.log(`[ MAIN ] Saving complete!`);
+
+>>>>>>> 7f405ae2e830b7b6d745b0029c38b157aa93e2db
