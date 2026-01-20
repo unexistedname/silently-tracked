@@ -56,7 +56,7 @@ for (let key in baseData) {
       console.log(
         `[ MAIN ] New data has been stored to temporary variables. Stopping the program before the iteration ends will delete all progress.`,
       );
-      dataStored[id] = dataScrape;
+      dataStored[id] = {...dataScrape, link: baseData[key]};
       chapterStored[id] = {
         chapter: chapterScrape,
         newChapter: newChapter,
@@ -75,4 +75,3 @@ writeFileSync(dataPath, JSON.stringify(dataStored, null, 2), "utf-8");
 console.log(
   `[ MAIN ] Iteration complete! You may close the program safely or let it continue in ${interval} minutes.`,
 );
-
