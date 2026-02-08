@@ -31,7 +31,7 @@ This project is intended to be used with another program that I plan to make in 
 - [ ] Website GUI using React (or maybe just a regular software/mobile app if i have time)
 - [ ] Tracks personal records and history (idk how to say it).
 - [x] Replace Playwright with request-based scraping for optimization
-- [ ] Interactive Discord bot features
+- [ ] Interactive Discord bot features (On progress [here](https://github.com/unexistedname/st-discord-bot.git))
 - [ ] Support for tracking multiple websites
 - [ ] Mirroring feature (basically same as the prev one)
     

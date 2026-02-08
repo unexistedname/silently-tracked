@@ -1,8 +1,9 @@
 import { resolve } from "path";
 import axios from "axios";
 import { readFileSync, existsSync, writeFileSync } from "fs";
-import * as Scraper from "./tracker/scraper";
+import * as Scraper from "./tracker/scraper.ts";
 import "dotenv/config";
+const now: Date = new Date();
 
 // data: For storing updated data
 // baseData: For storing list of manga to be updated
@@ -33,7 +34,7 @@ if (isNaN(interval)) {
 
 // ----main stuff----
 (async () => {
-  console.log("[ MAIN ] Scraping started...");
+  console.log(`[ MAIN | ${now.toLocaleTimeString()} ] Scraping started...`);
   for (let key in baseData) {
     if (baseData.hasOwnProperty(key)) {
       try {
