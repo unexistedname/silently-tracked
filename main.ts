@@ -32,6 +32,11 @@ if (isNaN(interval)) {
   interval = 30;
 }
 
+enum DOMAIN { 
+  RawKuma = "rawkuma.net",
+  MangaDex = "mangadex.org",
+}
+
 // ----main stuff----
 (async () => {
   console.log(`[ MAIN | ${now.toLocaleTimeString()} ] Scraping started...`);

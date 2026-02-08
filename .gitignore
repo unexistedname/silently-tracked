@@ -5,3 +5,4 @@ data/data.json
 data/media
 .gitignore
 interpreter.js
+test.ts
