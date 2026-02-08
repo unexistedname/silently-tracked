@@ -1,17 +1,8 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-
+import { metadata } from "./lib/metadata";
 // Type Definition
-export type metadata = {
-  title: string;
-  altTitle?: string;
-  author?: string;
-  artist?: string;
-  genre?: string[];
-  descriptions: string[] | string;
-  coverURL: string | null;
-  src: string;
-};
+
 
 // ---------------------------------------
 export async function chapter(html: string): Promise<number[]> {
@@ -25,7 +16,7 @@ export async function chapter(html: string): Promise<number[]> {
     console.log("[ SCRAPER.CHAPTER ] Chapter list API get.");
 
     const chapter_url_res = await axios.get(list_url);
-    
+
     console.log("[ SCRAPER.CHAPTER ] Successfully executed GET request into chapter API.");
     const $$ = cheerio.load(chapter_url_res.data);
     const list = $$("div#chapter-list div")
@@ -60,7 +51,7 @@ export async function metadataMAL(id: number): Promise<metadata> {
       .map((_, el) => $(el).text().toLowerCase())
       .get();
     const cover = $("[itemprop='image']").attr("data-src")?.toString()
-    
+
     return {
       title: title,
       altTitle: alt,
@@ -71,8 +62,8 @@ export async function metadataMAL(id: number): Promise<metadata> {
       coverURL: cover ? cover : null,
       src: "mal"
     }
-    
-    
+
+
   } catch (error: unknown) {
     throw error;
   }
