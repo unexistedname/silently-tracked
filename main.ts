@@ -3,6 +3,7 @@ import axios from "axios";
 import { readFileSync, existsSync, writeFileSync } from "fs";
 import * as Scraper from "./tracker/scraper.ts";
 import "dotenv/config";
+import { Domain } from "domain";
 const now: Date = new Date();
 
 // data: For storing updated data
@@ -32,7 +33,7 @@ if (isNaN(interval)) {
   interval = 30;
 }
 
-enum DOMAIN { 
+enum DOMAIN {
   RawKuma = "rawkuma.net",
   MangaDex = "mangadex.org",
 }
@@ -44,6 +45,16 @@ enum DOMAIN {
     if (baseData.hasOwnProperty(key)) {
       try {
         console.log(`[ MAIN ] Processing ${key}...`);
+        let linkDomain = baseData[key].split("/")[2];
+        switch (linkDomain) {
+          case DOMAIN.RawKuma:
+            // TODO : Run a function that start fetch and calls chapter and metadata scraper.
+            break;
+          default:
+            break;
+        }
+
+        // wait
         const id: string = key.toLowerCase().replace(/\s+/g, "");
         const res = await axios.get(baseData[key]);
 
