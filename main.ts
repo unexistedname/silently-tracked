@@ -2,7 +2,6 @@ import { resolve } from "path";
 import axios from "axios";
 import { readFileSync, existsSync, writeFileSync } from "fs";
 import * as Scraper from "./tracker/scraper.ts";
-import "dotenv/config";
 const now: Date = new Date();
 
 // data: For storing updated data
@@ -23,14 +22,6 @@ const dataStored = existsSync(dataPath)
 const chapterStored = existsSync(chapterPath)
   ? JSON.parse(readFileSync(chapterPath, "utf-8") || "{}")
   : createNewFile(chapterPath, "chapter");
-let interval: number = parseInt(process.env.INTERVAL as string);
-
-if (isNaN(interval)) {
-  console.log(
-    "Cannot get the INTERVAL value from env. Using the default value (30) instead.",
-  );
-  interval = 30;
-}
 
 // ----main stuff----
 (async () => {
@@ -117,6 +108,6 @@ if (isNaN(interval)) {
   writeFileSync(chapterPath, JSON.stringify(chapterStored, null, 2), "utf-8");
   writeFileSync(dataPath, JSON.stringify(dataStored, null, 2), "utf-8");
 
-  console.log(`[ MAIN ] Saving complete!`);
+  console.log(`[ MAIN | ${now.toLocaleTimeString()} ] Saving complete!`);
   process.exit(0);
 })();
