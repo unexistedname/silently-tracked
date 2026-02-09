@@ -4,7 +4,7 @@ import { readFileSync, existsSync, writeFileSync } from "fs";
 import dotenv from "dotenv";
 dotenv.config();
 
-import * as Scraper from "./tracker/scraper.js";
+import * as Scraper from "./tracker/scraper.ts";
 const now: Date = new Date();
 
 // data: For storing updated data
