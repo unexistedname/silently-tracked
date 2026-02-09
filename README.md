@@ -4,7 +4,7 @@ Nothing more, that's it.
 
 ## **Features:**
 - Tracking (scraping) using axios 
-- Currently only supports rawkuma
+- Currently only supports rawkuma (mangadex soon)
 
 ## Usage:
 1. Clone this repo,
@@ -18,10 +18,12 @@ Example:
     etc...
 }
 ```
+4. Make an `.env` file to specify the output directory,
 3. Open a terminal inside the folder,
 4. Run `npm install`
-5. Run `npm run start` for a one-time check, `npm run start_auto` for periodic check (the interval value can be configured in the `.env` file)
-6. You may notice new files called `chapter.json` and `data.json` have appeared in `data` folder. 
+5. Run `npx tsc` to compile the files, a new directory called "dist" will appear.
+6. Run `node dist/main.js` to start the program.
+6. You may notice new files called `chapter.json` and `data.json` have appeared in the directory you specifiy in `.env` file earlier. 
 - `data.json` contains metadata for every tracked manga. Currently it's unused, but it'll be used for future app/gui.
 - `chapter.json` contains the scraped chapters. It also has newChapter key which holds newly updated chapter. The chapter(s) will stay in newChapter until newer chapter is detected.
 
@@ -32,7 +34,7 @@ This project is intended to be used with another program that I plan to make in 
 - [ ] Tracks personal records and history (idk how to say it).
 - [x] Replace Playwright with request-based scraping for optimization
 - [ ] Interactive Discord bot features (On progress [here](https://github.com/unexistedname/st-discord-bot.git))
-- [ ] Support for tracking multiple websites
+- [ ] Support for tracking multiple websites (On progress)
 - [ ] Mirroring feature (basically same as the prev one)
     
 ---

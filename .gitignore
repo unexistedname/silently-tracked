@@ -4,4 +4,5 @@ data/chapter.json
 data/data.json
 data/media
 .gitignore
-interpreter.js
+dist
+tsco
