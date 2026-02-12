@@ -5,7 +5,7 @@ import { metadata } from "./lib/metadata";
 
 
 // ---------------------------------------
-export async function chapter(html: string): Promise<number[]> {
+export async function chapter(html: string): Promise<string[]> {
   try {
     const $ = cheerio.load(html);
     const list_url = $("#chapter-list").attr("hx-get");

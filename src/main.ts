@@ -3,7 +3,6 @@ import axios from "axios";
 import { readFileSync, existsSync, writeFileSync } from "fs";
 import dotenv from "dotenv";
 dotenv.config();
-
 import * as Scraper from "./tracker/scraper.js";
 const now: Date = new Date();
 
@@ -47,17 +46,20 @@ enum DOMAIN {
         console.log(`[ MAIN ] Processing ${key}...`);
         const id: string = key.toLowerCase().replace(/\s+/g, "");
 
-        const domain: string = baseData[key].split("/")[2]; 
+
+
+        // ========== WIP ZONE ===============
+        const domain: string = baseData[key].split("/")[2];
         switch (domain) {
           case DOMAIN.Rawkuma:
             // TODO
             break;
-        
+
           default:
             throw new Error("Couldn't find domain name: " + domain);
             break;
         }
-
+        // ====================================
 
 
         const res = await axios.get(baseData[key]);
@@ -67,8 +69,8 @@ enum DOMAIN {
         const chapterScrape = await Scraper.chapter(res.data);
 
         console.log(`[ MAIN ] Scraping complete! working on local data...`);
-        const oldChapter: Number[] = chapterStored[id]?.chapter ?? [];
-        let newChapter: Number[] = chapterScrape.filter(
+        const oldChapter: string[] = chapterStored[id]?.chapter ?? [];
+        let newChapter: string[] = chapterScrape.filter(
           (x) => !oldChapter.includes(x),
         );
         if (newChapter.length === 0) {
