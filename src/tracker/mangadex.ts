@@ -1,21 +1,28 @@
 import axios from "axios";
-import * as cheerio from "cheerio";
 import { metadata } from "./lib/metadata";
 
 const baseUrl = "https://api.mangadex.org/manga";
-
+const baseUrlAuthor = "https://api.mangadex.org/author";
+const baseUrlArtist = "https://api.mangadex.org/artist";
+const baseUrlCover = "https://api.mangadex.org/cover";
+const baseCover = "https://mangadex.org/covers"
+// format url : idmanga/coverid.png
 // ------ CHAPTER SCRAPING ----------
-export async function chapter(url: string) {
+export async function chapter(url: string): Promise<string[]> { // Fuck yeah its done
     try {
         const id = url.split("/")[4];
         url = `${baseUrl}/${id}/feed`;
         const res = await axios.get(url);
         const data = res.data.data;
-        const chapters = data[0]
-            .filter((ch: any) => ['en', 'id']
-                .some((lang) => lang in (ch.attributes.translatedLanguages ?? {})
-                ))
-            .map((ch: any) => ch.attributes.chapter.toString());
+
+        const chapters = data
+            .filter((ch: any) => { // Only takes selected language (en)
+                const lang = ch.attributes?.translatedLanguage;
+                return lang === 'en'  // || lang === 'id';
+            })
+            .map((ch: any) => ch.attributes?.chapter) // Only takes the chapter number
+            .sort((a: string, b: string) => Number(a) - Number(b))
+        return chapters;
     } catch (error: unknown) {
         throw error;
     }
@@ -28,19 +35,43 @@ export async function metadata(url: string): Promise<metadata> {
         url = `${baseUrl}/${id}`;
         const res = await axios.get(url);
         const data = res.data.data.attributes;
+        const rel = res.data.data.relationships;
+
+        const authorID = rel
+            .find((auth: any) => auth.type === 'author')
+            .id
+        const artistID = rel
+            .find((auth: any) => auth.type === 'artist')
+            .id
+        const coverID = rel
+            .find((cover: any) => cover.type === 'cover_art')
+            .id
+        const authorAPI = `${baseUrlAuthor}/${authorID}`;
+        const coverAPI = `${baseUrlCover}/${coverID}`;
+        const authorRes = await axios.get(authorAPI);
+        const coverRes = await axios.get(coverAPI);
+        let artistRes;
+        if (authorID != artistID) {
+            const artistAPI = `${baseUrlArtist}/${artistID}`;
+            artistRes = await axios.get(artistAPI);
+        }
+
+        const title = data.title['ja-ro'];
+        const altTitle = data.altTitles[0].id ?? data.altTitles[0].en ?? data.altTitles[0].ja ?? null;
+        const author = authorRes.data.data.attributes.name ?? "";
+        const artist = artistRes?.data.data.attributes.name ?? author;
         const genre = data.tags.map((tag: any) => tag.attributes?.name?.en).filter(Boolean);
-
+        const description = data.description.en ?? data.description.ja ?? "";
+        const cover = `${baseCover}/${id}/${coverRes.data.data.attributes.fileName}`;
         return {
-            title: data.title['ja-ro'],
-            altTitle: data.title['id'] ?? data.title['en'] ?? data.title['ja'] ?? null,
-            author:,
-            artist:,
+            title: title,
+            altTitle: altTitle,
+            author: author,
+            artist: artist,
             genre: genre,
-            descriptions: data.description.en ?? data.description.ja ?? "",
-            coverURL,
+            descriptions: description,
+            coverURL: cover,
             src: 'mangadex'
-
-            // todo
         }
     } catch (error: unknown) {
         throw error;
