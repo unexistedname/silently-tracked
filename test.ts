@@ -1,6 +1,5 @@
 import axios from "axios";
-import { chapter, metadata } from "./src/tracker/mangadex";
-import * as rk from "./src/tracker/scraper";
+import { chapter, metadata } from "./src/tracker/Mangadex";
 let a: string = "https://mangadex.org/title/13ec3c49-9a27-4551-9ac4-4fffd530d69f/break-new-world";
 const baseUrl = "https://api.mangadex.org/manga";
 let title = a.split("/")[4];
