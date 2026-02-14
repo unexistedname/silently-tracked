@@ -80,7 +80,7 @@ export async function metadata(url: string): Promise<metadata> {
         const altTitle = data.altTitles[0].id ?? data.altTitles[0].en ?? data.altTitles[0].ja ?? null;
         const author = authorRes.data.data.attributes.name ?? "";
         const artist = artistRes?.data.data.attributes.name ?? author;
-        const genre = data.tags.map((tag: any) => tag.attributes?.name?.en).filter(Boolean);
+        const genre = data.tags.map((tag: any) => tag.attributes?.name?.en).filter(Boolean).toLowerCase();
         const description = data.description.en ?? data.description.ja ?? "";
         const cover = `${baseCover}/${id}/${coverRes.data.data.attributes.fileName}`;
         return {
