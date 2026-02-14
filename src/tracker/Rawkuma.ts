@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import { metadata } from "./lib/Metadata";
+import type { metadata } from "./lib/Metadata.js";
 // Type Definition
 
 

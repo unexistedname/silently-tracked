@@ -5,10 +5,10 @@ const now: Date = new Date();
 import dotenv from "dotenv";
 dotenv.config();
 
-import * as Rawkuma from "./tracker/Rawkuma";
-import * as Mangadex from "./tracker/Mangadex";
-import { DOMAIN } from "./tracker/lib/Domain";
-import { metadata } from "./tracker/lib/Metadata";
+import * as Rawkuma from "./tracker/Rawkuma.js";
+import * as Mangadex from "./tracker/Mangadex.js";
+import { DOMAIN } from "./tracker/lib/Domain.js";
+import type { metadata } from "./tracker/lib/Metadata.js";
 
 // data: For storing updated data
 // baseData: For storing list of manga to be updated

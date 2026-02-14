@@ -1,5 +1,5 @@
 import axios from "axios";
-import { metadata } from "./lib/Metadata";
+import type { metadata } from "./lib/Metadata.js";
 
 const baseUrl = "https://api.mangadex.org/manga";
 const baseUrlAuthor = "https://api.mangadex.org/author";
