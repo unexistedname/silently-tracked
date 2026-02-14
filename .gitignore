@@ -6,3 +6,4 @@ data/media
 .gitignore
 dist
 tsco
+test.ts

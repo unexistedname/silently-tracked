@@ -9,6 +9,7 @@ import * as Rawkuma from "./tracker/Rawkuma";
 import * as Mangadex from "./tracker/Mangadex";
 import { DOMAIN } from "./tracker/lib/Domain";
 import { metadata } from "./tracker/lib/Metadata";
+
 // data: For storing updated data
 // baseData: For storing list of manga to be updated
 // Change the content in baseData if you want to add/remove manga(s)
