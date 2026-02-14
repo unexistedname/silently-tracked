@@ -19,7 +19,7 @@ function createNewFile(path: string, fileName: string): {} {
   return {};
 }
 
-const dir = process.env.DATA_DIRECTORY;
+const dir = process.env['DATA_DIRECTORY'];
 if (!dir) {
   throw new Error("DATA_DIRECTORY is not defined!");
 }
