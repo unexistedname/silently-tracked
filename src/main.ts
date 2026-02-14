@@ -35,7 +35,6 @@ const chapterStored = existsSync(chapterPath)
   ? JSON.parse(readFileSync(chapterPath, "utf-8") || "{}")
   : createNewFile(chapterPath, "chapter");
 
-
 // ----main stuff----
 (async () => {
   console.log(`[ MAIN | ${now.toLocaleTimeString()} ] Scraping started...`);
