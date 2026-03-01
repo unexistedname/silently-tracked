@@ -1,10 +1,10 @@
 export type metadata = {
   title: string;
-  altTitle?: string;
-  author?: string;
-  artist?: string;
+  altTitle?: string | string[];
+  author?: string | string[];
+  artist?: string | string[];
   genre?: string[];
-  descriptions: string[] | string;
+  descriptions: string | string[];
   coverURL: string | null;
   src: string;
 };

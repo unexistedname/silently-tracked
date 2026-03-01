@@ -19,7 +19,7 @@ function createNewFile(path: string, fileName: string): {} {
   return {};
 }
 
-const dir = process.env['DATA_DIRECTORY'];
+const dir = process.env["DATA_DIRECTORY"];
 if (!dir) {
   throw new Error("DATA_DIRECTORY is not defined!");
 }
@@ -61,20 +61,22 @@ const chapterStored = existsSync(chapterPath)
             dataScrape = temp_dataScrape; // For safety, idk if this is even useful
             chapterScrape = await Rawkuma.chapter(res.data);
             break;
-          };
+          }
 
           case DOMAIN.Mangadex: {
             console.log("[ MAIN ] Getting from mangadex");
 
-            const temp_dataScrape: metadata = await Mangadex.metadata(baseData[key]);
+            const temp_dataScrape: metadata = await Mangadex.metadata(
+              baseData[key],
+            );
             dataScrape = temp_dataScrape;
             chapterScrape = await Mangadex.chapter(baseData[key]);
             break;
-          };
+          }
           default:
             throw new Error("Couldn't find domain name: " + domain);
             break;
-        }; // end switch
+        } // end switch
 
         console.log(`[ MAIN ] Scraping complete! working on local data...`);
         const oldChapter: string[] = chapterStored[id]?.chapter ?? [];
@@ -83,7 +85,7 @@ const chapterStored = existsSync(chapterPath)
         );
         if (newChapter.length === 0) {
           newChapter = chapterStored[id]?.newChapter; // Keeps the old newChapter value if there's no update
-        };
+        }
 
         console.log(
           `[ MAIN ] New data has been stored to temporary variables. Stopping the program before the iteration ends will delete all progress.`,
@@ -96,9 +98,9 @@ const chapterStored = existsSync(chapterPath)
         };
       } catch (error: unknown) {
         console.error(error);
-      };
-    }; // end if
-  }; //end for
+      }
+    } // end if
+  } //end for
 
   console.log(
     `[ MAIN ] Tracking done! Saving data into local file (please do not close it yet)...`,

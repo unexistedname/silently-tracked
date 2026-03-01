@@ -3,7 +3,6 @@ import * as cheerio from "cheerio";
 import type { metadata } from "./lib/Metadata.js";
 // Type Definition
 
-
 // ---------------------------------------
 export async function chapter(html: string): Promise<string[]> {
   try {
@@ -17,7 +16,9 @@ export async function chapter(html: string): Promise<string[]> {
 
     const chapter_url_res = await axios.get(list_url);
 
-    console.log("[ RAWKUMA.CHAPTER ] Successfully executed GET request into chapter API.");
+    console.log(
+      "[ RAWKUMA.CHAPTER ] Successfully executed GET request into chapter API.",
+    );
     const $$ = cheerio.load(chapter_url_res.data);
     const list = $$("div#chapter-list div")
       .map((_, ch) => $$(ch).attr("data-chapter-number"))
@@ -39,7 +40,9 @@ export function metadata(html: string): metadata {
     const genre = $("a[itemprop='genre']")
       .map((_, el) => $(el).text().trim().toLowerCase())
       .get();
-    const descriptions = $("div[itemprop='description'][data-show='false']").text().trim();
+    const descriptions = $("div[itemprop='description'][data-show='false']")
+      .text()
+      .trim();
     const cover = $("div[itemprop='image'] img").attr("src");
     console.log("[ RAWKUMA.METADATA ] Metadata obtained.");
 
@@ -48,14 +51,12 @@ export function metadata(html: string): metadata {
       descriptions: descriptions,
       coverURL: cover ? cover : null,
       genre: genre,
-      src: "rawkuma"
+      src: "rawkuma",
     };
   } catch (error: unknown) {
     throw error;
   }
 }
-
-
 
 // ---------- METADATA RAWKUMA------------
 // export async function metadataMAL(id: number): Promise<metadata> {
@@ -89,7 +90,6 @@ export function metadata(html: string): metadata {
 //       coverURL: cover ? cover : null,
 //       src: "mal"
 //     }
-
 
 //   } catch (error: unknown) {
 //     throw error;
