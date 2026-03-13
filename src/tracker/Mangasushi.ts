@@ -2,7 +2,7 @@ import axios from "axios";
 import * as cheerio from "cheerio";
 import type { metadata } from "./lib/Metadata.js";
 
-export async function chapter(url: string): Promise<String[]> {
+export async function chapter(url: string): Promise<string[]> {
   try {
     if (url.at(-1) === "/") {
       url = url.slice(0, -1); // Removes additional / if there's one
@@ -12,11 +12,11 @@ export async function chapter(url: string): Promise<String[]> {
       url: `${url}/ajax/chapters`,
     });
     const $ = cheerio.load(res.data);
-
+    console.log("[ MANGASUSHI.CHAPTER ] Chapter list API get.");
     const list = $(".wp-manga-chapter a")
       .map((_, el) => $(el).text().trim().split(" ")[1])
       .get();
-
+    console.log("[ MANGASUSHI.CHAPTER ] Chapter list obtained.");
     return list;
   } catch (error: unknown) {
     throw error;
@@ -61,6 +61,7 @@ export async function metadata(url: string): Promise<metadata> {
     const author = post_content["authors"] ?? "";
     const artist = post_content["artists"] ?? "";
     const genre = post_content["genres"];
+    console.log("[ MANGASUSHI.METADATA ] Metadata obtained.");
     return {
       title: title,
       altTitle: alt,
