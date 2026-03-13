@@ -3,11 +3,11 @@ import * as cheerio from "cheerio";
 import type { metadata } from "./lib/Metadata.js";
 // Type Definition
 
-
 // ---------------------------------------
-export async function chapter(html: string): Promise<string[]> {
+export async function chapter(url: string): Promise<string[]> {
   try {
-    const $ = cheerio.load(html);
+    const res = await axios.get(url);
+    const $ = cheerio.load(res.data);
     const list_url = $("#chapter-list").attr("hx-get");
     if (typeof list_url !== "string") {
       console.log("Chapter URL unexpected data type: ", typeof list_url);
@@ -17,7 +17,9 @@ export async function chapter(html: string): Promise<string[]> {
 
     const chapter_url_res = await axios.get(list_url);
 
-    console.log("[ RAWKUMA.CHAPTER ] Successfully executed GET request into chapter API.");
+    console.log(
+      "[ RAWKUMA.CHAPTER ] Successfully executed GET request into chapter API.",
+    );
     const $$ = cheerio.load(chapter_url_res.data);
     const list = $$("div#chapter-list div")
       .map((_, ch) => $$(ch).attr("data-chapter-number"))
@@ -30,16 +32,19 @@ export async function chapter(html: string): Promise<string[]> {
   }
 }
 
-export function metadata(html: string): metadata {
+export async function metadata(url: string): Promise<metadata> {
   // Scrapes from rawkuma, doesn't get author & artist name
   try {
-    const $ = cheerio.load(html);
+    const res = await axios.get(url);
+    const $ = cheerio.load(res.data);
 
     const title = $("h1[itemprop='name']").text().trim();
     const genre = $("a[itemprop='genre']")
       .map((_, el) => $(el).text().trim().toLowerCase())
       .get();
-    const descriptions = $("div[itemprop='description'][data-show='false']").text().trim();
+    const descriptions = $("div[itemprop='description'][data-show='false']")
+      .text()
+      .trim();
     const cover = $("div[itemprop='image'] img").attr("src");
     console.log("[ RAWKUMA.METADATA ] Metadata obtained.");
 
@@ -48,14 +53,12 @@ export function metadata(html: string): metadata {
       descriptions: descriptions,
       coverURL: cover ? cover : null,
       genre: genre,
-      src: "rawkuma"
+      src: "rawkuma",
     };
   } catch (error: unknown) {
     throw error;
   }
 }
-
-
 
 // ---------- METADATA RAWKUMA------------
 // export async function metadataMAL(id: number): Promise<metadata> {
@@ -89,7 +92,6 @@ export function metadata(html: string): metadata {
 //       coverURL: cover ? cover : null,
 //       src: "mal"
 //     }
-
 
 //   } catch (error: unknown) {
 //     throw error;

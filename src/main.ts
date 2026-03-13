@@ -1,14 +1,17 @@
 import { resolve, join } from "path";
 import { readFileSync, existsSync, writeFileSync } from "fs";
-import axios from "axios";
 const now: Date = new Date();
 import dotenv from "dotenv";
 dotenv.config();
 
-import * as Rawkuma from "./tracker/Rawkuma.js";
-import * as Mangadex from "./tracker/Mangadex.js";
+// Type aliases and enum
 import { DOMAIN } from "./tracker/lib/Domain.js";
 import type { metadata } from "./tracker/lib/Metadata.js";
+
+// Libraries for scraping
+import * as Rawkuma from "./tracker/Rawkuma.js";
+import * as Mangadex from "./tracker/Mangadex.js";
+import * as Mangasushi from "./tracker/Mangasushi.js";
 
 // data: For storing updated data
 // baseData: For storing list of manga to be updated
@@ -19,7 +22,7 @@ function createNewFile(path: string, fileName: string): {} {
   return {};
 }
 
-const dir = process.env['DATA_DIRECTORY'];
+const dir = process.env["DATA_DIRECTORY"];
 if (!dir) {
   throw new Error("DATA_DIRECTORY is not defined!");
 }
@@ -44,38 +47,39 @@ const chapterStored = existsSync(chapterPath)
         console.log(`[ MAIN ] Processing ${key}...`);
         const id: string = key.toLowerCase().replace(/\s+/g, "");
 
-        // ========== WIP ZONE ===============
-        let chapterScrape: string[] = []; // For storing scraped chapters
-        let dataScrape = {}; // For storing scraped metadata
-        const domain: string = baseData[key].split("/")[2];
+        let chapterScrape: string[] = []; // For storing new scraped chapters
+        let dataScrape: Partial<metadata> = {}; // For storing new scraped metadata
+        const domain: string = baseData[key].split("/")[2]; // Getting the domain name
 
-        switch (domain) {
+        switch (domain) { // Start scraping here 
           case DOMAIN.Rawkuma: {
             console.log("[ MAIN ] Getting from rawkuma");
-            const res = await axios.get(baseData[key]);
-
-            console.log(
-              `[ MAIN ] Successfully executed GET request for ${key}...`,
-            );
-            const temp_dataScrape: metadata = Rawkuma.metadata(res.data);
-            dataScrape = temp_dataScrape; // For safety, idk if this is even useful
-            chapterScrape = await Rawkuma.chapter(res.data);
+            dataScrape = await Rawkuma.metadata(baseData[key]); 
+            chapterScrape = await Rawkuma.chapter(baseData[key]);
             break;
-          };
+          }
 
           case DOMAIN.Mangadex: {
             console.log("[ MAIN ] Getting from mangadex");
-
-            const temp_dataScrape: metadata = await Mangadex.metadata(baseData[key]);
-            dataScrape = temp_dataScrape;
+            dataScrape = await Mangadex.metadata(baseData[key]);
             chapterScrape = await Mangadex.chapter(baseData[key]);
             break;
-          };
+          }
+
+          case DOMAIN.Mangasushi: {
+            console.log("[ MAIN ] Getting from mangasushi");
+            dataScrape = await Mangasushi.metadata(baseData[key]);
+            chapterScrape = await Mangasushi.chapter(baseData[key]);
+            break;
+          }
           default:
             throw new Error("Couldn't find domain name: " + domain);
             break;
-        }; // end switch
-
+        } // end switch
+        if (dataScrape.title === "") {
+          throw new Error(`[ MAIN ] Title doesn't exist!`);
+          
+        }
         console.log(`[ MAIN ] Scraping complete! working on local data...`);
         const oldChapter: string[] = chapterStored[id]?.chapter ?? [];
         let newChapter: string[] = chapterScrape.filter(
@@ -83,7 +87,7 @@ const chapterStored = existsSync(chapterPath)
         );
         if (newChapter.length === 0) {
           newChapter = chapterStored[id]?.newChapter; // Keeps the old newChapter value if there's no update
-        };
+        }
 
         console.log(
           `[ MAIN ] New data has been stored to temporary variables. Stopping the program before the iteration ends will delete all progress.`,
@@ -96,9 +100,9 @@ const chapterStored = existsSync(chapterPath)
         };
       } catch (error: unknown) {
         console.error(error);
-      };
-    }; // end if
-  }; //end for
+      }
+    } // end if
+  } //end for
 
   console.log(
     `[ MAIN ] Tracking done! Saving data into local file (please do not close it yet)...`,
