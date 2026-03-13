@@ -4,9 +4,10 @@ import type { metadata } from "./lib/Metadata.js";
 // Type Definition
 
 // ---------------------------------------
-export async function chapter(html: string): Promise<string[]> {
+export async function chapter(url: string): Promise<string[]> {
   try {
-    const $ = cheerio.load(html);
+    const res = await axios.get(url);
+    const $ = cheerio.load(res.data);
     const list_url = $("#chapter-list").attr("hx-get");
     if (typeof list_url !== "string") {
       console.log("Chapter URL unexpected data type: ", typeof list_url);
@@ -31,10 +32,11 @@ export async function chapter(html: string): Promise<string[]> {
   }
 }
 
-export function metadata(html: string): metadata {
+export async function metadata(url: string): Promise<metadata> {
   // Scrapes from rawkuma, doesn't get author & artist name
   try {
-    const $ = cheerio.load(html);
+    const res = await axios.get(url);
+    const $ = cheerio.load(res.data);
 
     const title = $("h1[itemprop='name']").text().trim();
     const genre = $("a[itemprop='genre']")
