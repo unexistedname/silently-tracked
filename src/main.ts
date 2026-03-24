@@ -12,6 +12,7 @@ import type { metadata } from "./tracker/lib/Metadata.js";
 import * as Rawkuma from "./tracker/Rawkuma.js";
 import * as Mangadex from "./tracker/Mangadex.js";
 import * as Mangasushi from "./tracker/Mangasushi.js";
+import Rawdevart from "./tracker/Rawdevart.js";
 
 // data: For storing updated data
 // baseData: For storing list of manga to be updated
@@ -70,6 +71,15 @@ const chapterStored = existsSync(chapterPath)
             console.log("[ MAIN ] Getting from mangasushi");
             dataScrape = await Mangasushi.metadata(baseData[key]);
             chapterScrape = await Mangasushi.chapter(baseData[key]);
+            break;
+          }
+
+          case DOMAIN.Rawdevart: {
+            console.log("[ MAIN ] Getting from mangasushi");
+            const res = await Rawdevart(baseData[key]);
+
+            dataScrape = res.metadata;
+            chapterScrape = res.chapter;
             break;
           }
           default:

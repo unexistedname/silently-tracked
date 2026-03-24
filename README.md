@@ -1,5 +1,7 @@
 # A small personal project for tracking manga updates
 
+## [DEPRECATED, im f-ed, flutter only accepts dart code. had to rewrite the entire thing later]
+
 Nothing more, that's it.
 
 ## **Features:**
